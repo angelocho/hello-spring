@@ -8,13 +8,13 @@ pipeline {
 		steps {
                         sh './mvnw package'
                 }
+	        post { 
+			always {
+				junit skipOldReports: true, skipPublishingChecks: true, testResults: 'target/surefire-reports/*.xml'
+			}	
+		}
             }
-            post { 
-		always {
-		junit skipOldReports: true, skipPublishingChecks: true, testResults: 'target/surefire-reports/*.xml'
-		}	
-	    }
-            stage('TestingDocker') {
+	    stage('TestingDocker') {
 		steps {
                         sh 'docker-compose config'
                 }
