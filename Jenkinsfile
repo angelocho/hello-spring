@@ -11,7 +11,7 @@ pipeline {
             }
             stage('Tests') {
 		steps {
-                        junit './target/surefire-reports/TEST-*.xml'
+                        junit 'target/surefire-reports/TEST-*.xml'
                 }
             }
             stage('TestingDocker') {
