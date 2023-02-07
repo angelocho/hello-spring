@@ -9,11 +9,11 @@ pipeline {
                         sh './mvnw package'
                 }
             }
-            stage('Tests') {
-		steps {
-                        junit 'target/surefire-reports/TEST-*.xml'
-                }
-            }
+            post { 
+		always {
+		junit skipOldReports: true, skipPublishingChecks: true, testResults: 'target/surefire-reports/*.xml'
+		}	
+	    }
             stage('TestingDocker') {
 		steps {
                         sh 'docker-compose config'
@@ -25,14 +25,14 @@ pipeline {
                     }
                 
             }
-	        stage('starting') {
+	    stage('starting') {
                 steps {
                        sh '''docker-compose up -d
                        docker-compose logs -t --tail=10'''
                        
 		       echo '\033[1;32m[Success] \033[0m'
-                }
-        }
+                     }
+            }
         
     }
 }
