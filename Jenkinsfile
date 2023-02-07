@@ -9,6 +9,11 @@ pipeline {
                         sh './mvnw package'
                 }
             }
+            stage('Tests') {
+		steps {
+                        junit './target/surefire-reports/TEST-*.xml'
+                }
+            }
             stage('TestingDocker') {
 		steps {
                         sh 'docker-compose config'
